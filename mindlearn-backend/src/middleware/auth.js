@@ -12,3 +12,11 @@ export function requireAuth(req, res, next) {
     return res.status(401).json({ error: 'Invalid token' })
   }
 }
+
+export function requireAdmin(req, res, next) {
+  const secret = req.headers['x-admin-secret']
+  if (!secret || secret !== (process.env.JWT_SECRET || 'dev_secret_change_me')) {
+    return res.status(403).json({ error: 'Admin secret missing or invalid' })
+  }
+  next()
+}

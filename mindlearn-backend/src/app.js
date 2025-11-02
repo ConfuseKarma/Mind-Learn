@@ -2,8 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import authRoutes from './routes/auth.routes.js'
-import quizRoutes from './routes/quiz.routes.js'
+import lessonRoutes from './routes/lesson.routes.js'
 import progressRoutes from './routes/progress.routes.js'
+import adminRoutes from './routes/admin.routes.js'
 
 export async function createApp() {
   const app = express()
@@ -14,8 +15,9 @@ export async function createApp() {
   app.get('/', (req, res) => res.json({ ok: true, service: 'Mind&Learn API' }))
 
   app.use('/auth', authRoutes)
-  app.use('/quizzes', quizRoutes)
+  app.use('/', lessonRoutes)
   app.use('/progress', progressRoutes)
+  app.use('/admin', adminRoutes)
 
   return app
 }

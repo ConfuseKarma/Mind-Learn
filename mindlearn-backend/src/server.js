@@ -1,9 +1,9 @@
 import 'dotenv/config'
-import { createApp } from './app.js'
 import { sequelize } from './db.js'
+import { createApp } from './app.js'
 
 await sequelize.authenticate()
-await sequelize.sync() // cria tabelas se não existirem
+await sequelize.sync()
 
 const app = await createApp()
 const PORT = process.env.PORT || 3000
