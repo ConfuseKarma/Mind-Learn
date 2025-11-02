@@ -7,7 +7,12 @@ export const User = sequelize.define('User', {
   passwordHash: { type: DataTypes.STRING, allowNull: false }
 })
 
-export const Quiz = sequelize.define('Quiz', {
+export const Theme = sequelize.define('Theme', {
+  name: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.TEXT }
+})
+
+export const Lesson = sequelize.define('Lesson', {
   title: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.TEXT },
   difficulty: { type: DataTypes.INTEGER, defaultValue: 1 }
@@ -20,7 +25,7 @@ export const Question = sequelize.define('Question', {
 export const Option = sequelize.define('Option', {
   text: { type: DataTypes.TEXT, allowNull: false },
   isCorrect: { type: DataTypes.BOOLEAN, defaultValue: false }
-}, { underscored: false })
+})
 
 export const Attempt = sequelize.define('Attempt', {
   score: { type: DataTypes.INTEGER, allowNull: false },
@@ -36,16 +41,19 @@ export const Badge = sequelize.define('Badge', {
 export const UserBadge = sequelize.define('UserBadge', {}, { timestamps: true })
 
 // Relations
-Quiz.hasMany(Question, { onDelete: 'CASCADE' })
-Question.belongsTo(Quiz)
+Theme.hasMany(Lesson, { onDelete: 'CASCADE' })
+Lesson.belongsTo(Theme)
+
+Lesson.hasMany(Question, { onDelete: 'CASCADE' })
+Question.belongsTo(Lesson)
 
 Question.hasMany(Option, { onDelete: 'CASCADE' })
 Option.belongsTo(Question)
 
 User.hasMany(Attempt, { onDelete: 'CASCADE' })
 Attempt.belongsTo(User)
-Quiz.hasMany(Attempt, { onDelete: 'CASCADE' })
-Attempt.belongsTo(Quiz)
+Lesson.hasMany(Attempt, { onDelete: 'CASCADE' })
+Attempt.belongsTo(Lesson)
 
 User.belongsToMany(Badge, { through: UserBadge })
 Badge.belongsToMany(User, { through: UserBadge })
