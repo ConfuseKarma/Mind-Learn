@@ -1,59 +1,64 @@
-import { DataTypes } from 'sequelize'
-import { sequelize } from '../db.js'
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db.js";
 
-export const User = sequelize.define('User', {
+export const User = sequelize.define("User", {
   name: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false, unique: true },
-  passwordHash: { type: DataTypes.STRING, allowNull: false }
-})
+  passwordHash: { type: DataTypes.STRING, allowNull: false },
+});
 
-export const Theme = sequelize.define('Theme', {
+export const Theme = sequelize.define("Theme", {
   name: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.TEXT }
-})
+  description: { type: DataTypes.TEXT },
+});
 
-export const Lesson = sequelize.define('Lesson', {
+export const Lesson = sequelize.define("Lesson", {
   title: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.TEXT },
-  difficulty: { type: DataTypes.INTEGER, defaultValue: 1 }
-})
+  difficulty: { type: DataTypes.INTEGER, defaultValue: 1 },
+});
 
-export const Question = sequelize.define('Question', {
-  text: { type: DataTypes.TEXT, allowNull: false }
-})
-
-export const Option = sequelize.define('Option', {
+export const Question = sequelize.define("Question", {
   text: { type: DataTypes.TEXT, allowNull: false },
-  isCorrect: { type: DataTypes.BOOLEAN, defaultValue: false }
-})
+});
 
-export const Attempt = sequelize.define('Attempt', {
+export const Option = sequelize.define("Option", {
+  text: { type: DataTypes.TEXT, allowNull: false },
+  isCorrect: { type: DataTypes.BOOLEAN, defaultValue: false },
+});
+
+export const Attempt = sequelize.define("Attempt", {
   score: { type: DataTypes.INTEGER, allowNull: false },
-  total: { type: DataTypes.INTEGER, allowNull: false }
-})
+  total: { type: DataTypes.INTEGER, allowNull: false },
+});
 
-export const Badge = sequelize.define('Badge', {
+export const Badge = sequelize.define("Badge", {
   code: { type: DataTypes.STRING, unique: true, allowNull: false },
   name: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.TEXT }
-})
+  description: { type: DataTypes.TEXT },
+});
 
-export const UserBadge = sequelize.define('UserBadge', {}, { timestamps: true })
+export const UserBadge = sequelize.define("UserBadge", {}, { timestamps: true });
 
 // Relations
-Theme.hasMany(Lesson, { onDelete: 'CASCADE' })
-Lesson.belongsTo(Theme)
+Theme.hasMany(Lesson, { onDelete: "CASCADE" });
+Lesson.belongsTo(Theme);
 
-Lesson.hasMany(Question, { onDelete: 'CASCADE' })
-Question.belongsTo(Lesson)
+Lesson.hasMany(Question, { onDelete: "CASCADE" });
+Question.belongsTo(Lesson);
 
-Question.hasMany(Option, { onDelete: 'CASCADE' })
-Option.belongsTo(Question)
+Question.hasMany(Option, { onDelete: "CASCADE" });
+Option.belongsTo(Question);
 
-User.hasMany(Attempt, { onDelete: 'CASCADE' })
-Attempt.belongsTo(User)
-Lesson.hasMany(Attempt, { onDelete: 'CASCADE' })
-Attempt.belongsTo(Lesson)
+User.hasMany(Attempt, { onDelete: "CASCADE" });
+Attempt.belongsTo(User);
+Lesson.hasMany(Attempt, { onDelete: "CASCADE" });
+Attempt.belongsTo(Lesson);
 
-User.belongsToMany(Badge, { through: UserBadge })
-Badge.belongsToMany(User, { through: UserBadge })
+User.belongsToMany(Badge, { through: UserBadge });
+Badge.belongsToMany(User, { through: UserBadge });
+
+UserBadge.belongsTo(User);
+UserBadge.belongsTo(Badge);
+User.hasMany(UserBadge, { onDelete: "CASCADE" });
+Badge.hasMany(UserBadge, { onDelete: "CASCADE" });
