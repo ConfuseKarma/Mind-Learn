@@ -77,7 +77,8 @@ A topologia de rede implementada segue uma **arquitetura distribuída** onde cad
  
 Cada grupo será responsável pela configuração do roteador do respectivo estado, implementando:
  
-- **Sub-redes específicas** para diferentes departamentos (SANGA, PEDAGI, ACRE, AVORÁ, etc.)
+- **Configurações específicas** para os switches e routers
+- **Configuração e acesso** via VM Ubuntu 
 - **Gateways** configurados para cada segmento de rede
 - **Roteamento estático e dinâmico** entre os diferentes estados
 - **VLANs** para segmentação lógica dos serviços
@@ -139,4 +140,5 @@ A **integração com Redes de Computadores** foi particularmente valiosa, pois p
 - **IEEE 830-1998** — Software Requirements Specification (SRS) Standard.
 - Tanenbaum, A. S. **Redes de Computadores**. Elsevier, 5ª ed.
 - **Cisco Networking Academy**. CCNA Routing and Switching.
+
 
