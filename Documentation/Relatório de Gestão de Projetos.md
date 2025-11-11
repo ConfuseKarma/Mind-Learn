@@ -25,7 +25,7 @@ O projeto adotou uma abordagem híbrida, combinando a estruturação do **PMBOK*
 
 ### 3.1 **Estrutura Analítica do Projeto (EAP)**
 
-1.0 Mind&Learn
+1.0 Mind&Learn  
 ├──1.1 Gestão do Projeto  
 ├──1.2 Desenvolvimento Frontend  
 ├──1.3 Desenvolvimento Backend  
