@@ -50,3 +50,18 @@ Router# copy running-config startup-config
 
 Preparação da Máquin Virtual Ubuntu:
 
+# Configuração de rede na VM
+sudo nano /etc/netplan/01-netcfg.yaml
+
+network:
+  version: 2
+  ethernet:
+    eth0:
+      dhcp4: false
+      addresses: [192.168.1.10/24]
+      gateway4: 192.168.1.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+
+sudo netplan apply
+
