@@ -68,7 +68,8 @@ A arquitetura do Mind&Learn é composta por um **frontend em React (Vite + TypeS
  
 Vamos realizar o deploy de um projeto de rede no laboratório de redes da FESA utilizando equipamentos reais para atender aos requisitos do projeto interdisciplinar.
  
-![Diagrama WAN](wan.png)
+<img width="2181" height="1203" alt="17628680908475640479572181794773" src="https://github.com/user-attachments/assets/d9bc0ced-9cfd-4239-b579-02ec02c8bf24" />
+
  
 A topologia de rede implementada segue uma **arquitetura distribuída** onde cada roteador representa um estado diferente, interconectados através de uma **WAN (Wide Area Network)**. Esta configuração permite simular um ambiente real de implantação do Mind&Learn em múltiplas localizações geográficas.
  
@@ -138,3 +139,4 @@ A **integração com Redes de Computadores** foi particularmente valiosa, pois p
 - **IEEE 830-1998** — Software Requirements Specification (SRS) Standard.
 - Tanenbaum, A. S. **Redes de Computadores**. Elsevier, 5ª ed.
 - **Cisco Networking Academy**. CCNA Routing and Switching.
+
