@@ -268,4 +268,4 @@ O projeto serve como **caso de estudo valioso** sobre a importância do **gerenc
 ---
 **Documento preparado em conformidade com o PMBOK 7ª Edição**
 **Última atualização**: 08/11/2024
-**Próxima revisão**: 15/11/2024
+**Próxima revisão**: 19/11/2024
