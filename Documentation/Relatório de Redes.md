@@ -44,3 +44,9 @@ Router(config)# enable secret nova_senha
 Router(config)# config-register 0x2102
 Router(config)# exit
 Router# copy running-config startup-config
+````
+
+### 3.2 **Configuração do Ambiente de Acesso**
+
+Preparação da Máquin Virtual Ubuntu:
+
