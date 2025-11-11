@@ -35,7 +35,7 @@ O projeto foi dividido em **quatro sprints principais**, com duração média de
 | **Sprint** | **Período** | **Principais Entregas** | **Responsáveis** | **Status** |
 |------------|-------------|-------------------------|------------------|------------|
 | **Sprint 0** | Setembro (1ª-2ª semana) | **Levantamento de requisitos**, **reuniões com pedagogos**, **definição do MVP**, **wireframes e protótipos** | **Todos** | ✅ Concluído |
-| **Sprint 1** | Setembro (3ª-4ª semana) | **Estrutura do frontend React**, **setup do backend Node.js**, **configuração Docker**, **banco PostgreSQL** | **Marcos, Roger** | ✅ Concluído |
+| **Sprint 1** | Setembro (3ª-4ª semana) | **Estrutura do frontend React**, **setup do backend Node.js**, **configuração Docker**, **banco MariaDB** | **Marcos, Roger** | ✅ Concluído |
 | **Sprint 2** | Outubro (1ª-3ª semana) | **API de autenticação JWT**, **sistema de usuários**, **CRUD de quizzes**, **UI responsiva** | **Kauê, Guilherme** | ✅ Concluído |
 | **Sprint 3** | Outubro (4ª) - Novembro (1ª) | **Sistema de insígnias**, **roles (prof/aluno/admin)**, **testes unitários**, **persistência de progresso** | **Todos** | 🟡 Em Andamento |
 | **Sprint 4** | Novembro (2ª-4ª semana) | **Testes de integração**, **refinamentos de UX**, **deploy**, **documentação final**, **coleta de feedback** | **Todos** | ⏳ Planejado |
@@ -55,7 +55,7 @@ O projeto foi dividido em **quatro sprints principais**, com duração média de
 - **RNF01**: O sistema deve ser **responsivo e acessível** em múltiplos dispositivos.
 - **RNF02**: O backend deve estar **containerizado em Docker** para fácil replicação.
 - **RNF03**: O **tempo de resposta das APIs** deve ser inferior a **2 segundos**.
-- **RNF04**: Os dados devem ser armazenados em **banco relacional seguro (PostgreSQL)**.
+- **RNF04**: Os dados devem ser armazenados em **banco relacional seguro (MariaDB)**.
 - **RNF05**: O sistema deve suportar **autenticação segura via JWT**.
  
 ## 7. **Arquitetura Técnica**
@@ -140,5 +140,6 @@ A **integração com Redes de Computadores** foi particularmente valiosa, pois p
 - **IEEE 830-1998** — Software Requirements Specification (SRS) Standard.
 - Tanenbaum, A. S. **Redes de Computadores**. Elsevier, 5ª ed.
 - **Cisco Networking Academy**. CCNA Routing and Switching.
+
 
 
