@@ -9,7 +9,7 @@ Este relatório documenta a implementação da infraestrutura de rede para o pro
 
 ### 2.1 **Arquitetura Geral**
 
-![Diagrama da Topologia WAN](wan-topology.png)
+<img width="2181" height="1203" alt="image" src="https://github.com/user-attachments/assets/a550761d-5588-4ce9-b1dd-6e782bf19bd3" />
 
 *A topologia completa da rede WAN será inserida aqui como imagem*
 
@@ -64,4 +64,10 @@ network:
         addresses: [8.8.8.8, 8.8.4.4]
 
 sudo netplan apply
+
+## 4. **Esquema de Endereçamento IP**
+
+### 4.1 **Tabela de Sub-redes por Estado**
+
+
 
