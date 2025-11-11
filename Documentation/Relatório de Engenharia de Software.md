@@ -7,7 +7,7 @@ O projeto Mind&Learn é uma aplicação educacional voltada ao combate ao analfa
  
 ## 2. Objetivos do Documento
  
-O objetivo deste relatório é documentar de forma estruturada o processo de engenharia de software aplicado ao desenvolvimento do Mind&Learn, destacando a adoção de metodologias ágeis, a definição dos requisitos, a modelagem arquitetural e as práticas de testes. O documento também busca demonstrar a integração do projeto com as disciplinas de Gestão de Projetos e Redes de Computadores, evidenciando sua natureza interdisciplinar.
+O objetivo deste relatório é documentar de forma estruturada o processo de Engenharia de Software aplicado ao desenvolvimento do Mind&Learn, destacando a adoção de metodologias ágeis, a definição dos requisitos, a modelagem arquitetural e as práticas de testes. O documento também busca demonstrar a integração do projeto com as disciplinas de Gestão de Projetos e Redes de Computadores, evidenciando sua natureza interdisciplinar.
  
 ## 3. Metodologias Ágeis Estudadas
  
@@ -84,3 +84,4 @@ O desenvolvimento do Mind&Learn consolidou os aprendizados sobre processos ágei
 - React & Node.js Official Documentation. 2025.
 - IEEE 830-1998 — Software Requirements Specification (SRS) Standard.
  
+
