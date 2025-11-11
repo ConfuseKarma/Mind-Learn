@@ -74,8 +74,8 @@ Foram aplicados **testes unitários**, **de integração** e **funcionais**, uti
 |----------------|---------------|------------|-----------|
 | **Autenticação JWT** | API | Postman | **Sucesso** |
 | **Criação de usuário** | Unitário | Jest | **Sucesso** |
-| **CRUD de quizzes** | Integração | Jest + Supertest | **Parcial** |
-| **Persistência de progresso** | Funcional | Jest | **Em andamento** |
+| **CRUD de quizzes** | Integração | Jest + Supertest | **Sucesso** |
+| **Persistência de progresso** | Funcional | Jest | **Sucesso** |
 | **UI responsiva** | Manual | Browser | **Sucesso** |
  
 ## 10. **Histórico de Status Report**
@@ -96,3 +96,4 @@ O desenvolvimento do Mind&Learn consolidou os aprendizados sobre **processos ág
 - **Docker Documentation. Docker Compose and Networking**. 2025.
 - **React & Node.js Official Documentation**. 2025.
 - **IEEE 830-1998** — Software Requirements Specification (SRS) Standard.
+
