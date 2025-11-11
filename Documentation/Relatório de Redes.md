@@ -69,5 +69,14 @@ sudo netplan apply
 
 ### 4.1 **Tabela de Sub-redes por Estado**
 
-
+| **Estado** | **Sub-rede** | **Gateway** | **Máscara** | **Dispositivos** |
+|------------|--------------|-------------|-------------|------------------|
+| **São Paulo** | 192.168.0.0 | 192.168.0.1 | /24 | Router SP, Switch 1 |
+| **Pernambuco** | 192.168.1.0 | 192.168.1.1 | /24 | Router PE |
+| **Rio de Janeiro** | 192.168.2.0 | 192.168.2.1 | /24 | Router RJ, Switch 3 |
+| **Minas Gerais** | 192.168.3.0 | 192.168.3.1 | /24 | Router MG, Switch 2 |
+| **Amapá** | 192.168.4.0 | 192.168.4.1 | /24 | Router AP |
+| **Acre** | 192.168.5.0 | 192.168.5.1 | /24 | Router AC |
+| **Piauí** | 192.168.6.0 | 192.168.6.1 | /24 | Router PI |
+| **Bahia** | 192.168.7.0 | 192.168.7.1 | /24 | Router BA, Switch 4 |
 
