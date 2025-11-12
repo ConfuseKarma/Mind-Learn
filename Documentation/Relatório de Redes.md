@@ -183,7 +183,7 @@ traceroute 192.168.7.1  # Amapá -> Bahia
 traceroute 8.8.8.8      # Teste de internet
 ```
 
-6.2 Comandos de Verificação Cisco
+### 6.2 Comandos de Verificação Cisco
 
 ```
 # Verificação de status das interfaces
@@ -199,9 +199,9 @@ show vlan brief
 show interface trunk
 ```
 
-7. Integração com a Aplicação Mind&Learn
+## 7. Integração com a Aplicação Mind&Learn
 
-7.1 Módulo de Gerenciamento de Rede
+### 7.1 Módulo de Gerenciamento de Rede
 
 A aplicação Mind&Learn inclui um módulo específico para gerenciamento dos elementos de rede, permitindo:
 
@@ -212,7 +212,7 @@ Funcionalidades Implementadas:
 · ✅ Monitoramento de status dos equipamentos
 · ✅ Geração de relatórios de infraestrutura
 
-7.2 Estrutura de Dados para Elementos de Rede
+### 7.2 Estrutura de Dados para Elementos de Rede
 
 Tabela: Dispositivos
 
@@ -242,7 +242,7 @@ CREATE TABLE sub_redes (
 );
 ```
 
-7.3 Exemplo de Interface na Aplicação
+### 7.3 Exemplo de Interface na Aplicação
 
 ```typescript
 // Interface TypeScript para dispositivos
@@ -293,9 +293,9 @@ const ListaDispositivos: React.FC = () => {
 };
 ```
 
-8. Procedimentos de Troubleshooting - Amapá
+## 8. Procedimentos de Troubleshooting - Amapá
 
-8.1 Problemas Encontrados e Soluções
+### 8.1 Problemas Encontrados e Soluções
 
 Problema 1: Conectividade com Acre Intermitente
 
@@ -315,7 +315,7 @@ Problema 3: VLANs Não Comunicando
 · Causa: Portas trunk mal configuradas
 · Solução: Reconfiguração das portas trunk no switch
 
-8.2 Checklist de Verificação - Amapá
+### 8.2 Checklist de Verificação - Amapá
 
 ```
 # Checklist pós-configuração
@@ -327,9 +327,9 @@ Problema 3: VLANs Não Comunicando
 [x] Políticas de segurança implementadas
 ```
 
-9. Relatórios e Métricas - Amapá
+## 9. **Relatórios e Métricas - Amapá**
 
-9.1 Estatísticas da Rede - Amapá
+### 9.1 **Estatísticas da Rede - Amapá**
 
 Métrica Valor
 Total de Dispositivos 3
@@ -338,7 +338,7 @@ Estados Conectados 8
 Uptime 99.5%
 Latência Média 35ms
 
-9.2 Exemplo de Relatório Gerado
+### 9.2 **Exemplo de Relatório Gerado**
 
 ```json
 {
@@ -358,29 +358,30 @@ Latência Média 35ms
 }
 ```
 
-10. Conclusão e Lições Aprendidas - Amapá
+## 10. **Conclusão e Lições Aprendidas - Amapá**
 
-10.1 Resultados Obtidos
+### 10.1 **Resultados Obtidos**
 
 · ✅ Implementação bem-sucedida do roteador do Amapá
 · ✅ Integração completa com a WAN multi-estado
 · ✅ Ambiente de testes realista e funcional
 · ✅ Documentação completa da configuração
+· ✅ Testes de confirmação prévios realizados no Cisco Packet Tracer antes da execução real
 
-10.2 Desafios Superados
+### 10.2 **Desafios Superados**
 
 1. Complexidade de Configuração: Curva de aprendizado com equipamentos Cisco
 2. Integração com Switches: Configuração correta das portas trunk
 3. Troubleshooting: Identificação e correção de problemas de conectividade específicos do Amapá
 
-10.3 Recomendações para Expansão
+### 10.3 **Recomendações para Expansão**
 
 1. Implementar BGP para roteamento dinâmico entre estados
 2. Adicionar link redundante com Pernambuco
 3. Implementar monitoramento específico para o Amapá
 4. Expandir capacidade para mais usuários na sub-rede
 
-10.4 Valor para o Projeto Interdisciplinar
+### 10.4 **Valor para o Projeto Interdisciplinar**
 
 A infraestrutura de rede implementada para o Amapá proporcionou:
 
