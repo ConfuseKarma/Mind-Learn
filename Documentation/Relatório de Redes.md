@@ -10,8 +10,6 @@ Este relatório documenta a implementação da infraestrutura de rede para o pro
 
 <img width="2181" height="1203" alt="image" src="https://github.com/user-attachments/assets/a550761d-5588-4ce9-b1dd-6e782bf19bd3" />
 
-A topologia completa da rede WAN será inserida aqui como imagem
-
 ### 2.2 **Especificação dos Equipamentos**
 
 · **Roteadores:** Cisco Series 2800 (1 por estado/grupo)
