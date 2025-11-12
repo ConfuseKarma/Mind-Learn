@@ -83,37 +83,37 @@ sudo netplan apply
 
 -----
 
-Projeto Mind&Learn - Relatório de Redes de Computadores
+# **Projeto Mind&Learn - Relatório de Redes de Computadores**
 
-1. Introdução
+## 1. **Introdução**
 
 Este relatório documenta a implementação da infraestrutura de rede para o projeto Mind&Learn, desenvolvido no laboratório de redes da FESA. A topologia implementada consiste em uma WAN (Wide Area Network) interconectando múltiplos estados brasileiros, utilizando equipamentos Cisco reais para simular um ambiente corporativo distribuído. Este documento foca especificamente na configuração do estado do Amapá.
 
-2. Topologia da Rede
+## 2. **Topologia da Rede**
 
-2.1 Arquitetura Geral
+### 2.1 **Arquitetura Geral**
 
 wan-topology.png
 
 A topologia completa da rede WAN será inserida aqui como imagem
 
-2.2 Especificação dos Equipamentos
+### 2.2 **Especificação dos Equipamentos**
 
-· Roteadores: Cisco Series 2800 (1 por estado/grupo)
-· Switches: Cisco (4 unidades)
-· Firewall: Cisco ASA
-· Modem: Cisco
+· **Roteadores:** Cisco Series 2800 (1 por estado/grupo)
+· **Switches:** Cisco (4 unidades)
+· **Firewall:** Cisco ASA
+· **Modem:** Cisco
 
-3. Configuração dos Dispositivos - Amapá
+## 3. **Configuração dos Dispositivos - Amapá**
 
-3.1 Procedimento de Reset e Quebra de Senha
+### 3.1 **Procedimento de Reset e Quebra de Senha**
 
-Problema Identificado:
+**Problema Identificado:**
 
 · Roteador Cisco 2800 do Amapá com senha desconhecida
 · Impossibilidade de acesso aos modos privilegiados
 
-Solução Implementada:
+**Solução Implementada:**
 
 ```
 // Procedimento de password recovery
@@ -133,9 +133,9 @@ Router(config)# exit
 Router# copy running-config startup-config
 ```
 
-3.2 Configuração do Ambiente de Acesso
+### 3.2 **Configuração do Ambiente de Acesso**
 
-Preparação da Máquina Virtual Ubuntu:
+**Preparação da Máquina Virtual Ubuntu:**
 
 ```
 # Configuração de rede na VM
@@ -154,9 +154,9 @@ network:
 sudo netplan apply
 ```
 
-4. Esquema de Endereçamento IP
+## 4. **Esquema de Endereçamento IP**
 
-4.1 Tabela de Sub-redes por Estado
+### 4.1 **Tabela de Sub-redes por Estado**
 
 Estado Sub-rede Gateway Máscara Dispositivos
 São Paulo 192.168.0.0 192.168.0.1 /24 Router SP
@@ -168,9 +168,9 @@ Acre 192.168.5.0 192.168.5.1 /24 Router AC
 Piauí 192.168.6.0 192.168.6.1 /24 Router PI
 Bahia 192.168.7.0 192.168.7.1 /24 Router BA
 
-4.2 Configuração de Roteamento - Amapá
+### 4.2 **Configuração de Roteamento - Amapá**
 
-Configuração do Roteador Amapá:
+**Configuração do Roteador Amapá:**
 
 ```
 Router> enable
@@ -204,18 +204,18 @@ ROUTER-AP(config-if)# ip nat outside
 ROUTER-AP(config-if)# exit
 ```
 
-5. Configuração de Switches
+## 5. **Configuração de Switches**
 
-5.1 Interconexão dos Estados
+### 5.1 **Interconexão dos Estados**
 
 Os 4 switches interconectam os 8 roteadores dos estados conforme a topologia:
 
-· Switch 1: São Paulo, Pernambuco
-· Switch 2: Rio de Janeiro, Minas Gerais
-· Switch 3: Amapá, Acre
-· Switch 4: Piauí, Bahia
+· **Switch 1:** São Paulo, Pernambuco
+· **Switch 2:** Rio de Janeiro, Minas Gerais
+· **Switch 3:** Amapá, Acre
+· **Switch 4:** Piauí, Bahia
 
-5.2 Configuração do Switch 3 (Amapá e Acre):
+### 5.2 **Configuração do Switch 3 (Amapá e Acre):**
 
 ```
 Switch> enable
@@ -251,9 +251,9 @@ SW3-AP-AC(config-if-range)# switchport access vlan 20
 SW3-AP-AC(config-if-range)# exit
 ```
 
-6. Testes de Conectividade - Amapá
+## 6. **Testes de Conectividade - Amapá**
 
-6.1 Verificação Básica de Rede
+### 6.1 **Verificação Básica de Rede**
 
 ```
 # Teste de conectividade do Amapá
