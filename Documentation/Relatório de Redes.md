@@ -10,6 +10,10 @@ Este relatório documenta a implementação da infraestrutura de rede para o pro
 
 <img width="2181" height="1203" alt="image" src="https://github.com/user-attachments/assets/a550761d-5588-4ce9-b1dd-6e782bf19bd3" />
 
+## 2.1.1 Arquitetura Adaptada (Após consenso com equipes)
+
+<img width="1403" height="1077" alt="image" src="https://github.com/user-attachments/assets/9e3e74d4-6f80-4c00-b6fd-f73fae0be11e" />
+
 ### 2.2 **Especificação dos Equipamentos**
 
 · **Roteadores:** Cisco Series 2800 (1 por estado/grupo)
