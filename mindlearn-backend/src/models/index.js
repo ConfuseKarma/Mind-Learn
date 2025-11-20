@@ -16,9 +16,9 @@ Lesson.belongsTo(Theme);
 
 // Teacher que criou a Lesson
 User.hasMany(Lesson, {
-    as: "LessonsTaught",
-    foreignKey: "TeacherId",
-        onDelete: "SET NULL",
+  as: "LessonsTaught",
+  foreignKey: "TeacherId",
+  onDelete: "SET NULL",
 });
 Lesson.belongsTo(User, { as: "Teacher", foreignKey: "TeacherId" });
 
@@ -32,9 +32,9 @@ Question.belongsTo(Quiz);
 
 // Teacher que criou o Quiz
 User.hasMany(Quiz, {
-    as: "QuizzesAuthored",
-    foreignKey: "AuthorId",
-        onDelete: "SET NULL",
+  as: "QuizzesAuthored",
+  foreignKey: "AuthorId",
+  onDelete: "SET NULL",
 });
 Quiz.belongsTo(User, { as: "Author", foreignKey: "AuthorId" });
 
@@ -67,15 +67,4 @@ Badge.hasMany(UserBadge, { onDelete: "CASCADE" });
 User.hasMany(AuditLog, { foreignKey: "userId", onDelete: "SET NULL" });
 AuditLog.belongsTo(User, { foreignKey: "userId" });
 
-export {
-    User,
-    Theme,
-    Lesson,
-    Question,
-    Option,
-    Attempt,
-    Badge,
-    UserBadge,
-    Quiz,
-    AuditLog,
-};
+export { User, Theme, Lesson, Question, Option, Attempt, Badge, UserBadge, Quiz, AuditLog };
