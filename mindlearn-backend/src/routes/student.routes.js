@@ -2,16 +2,16 @@
 import { Router } from "express";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 import {
-    listThemes,
-    listLessonsByTheme,
-    getLesson,
-    attemptLesson,
+  listThemes,
+  listLessonsByTheme,
+  getLesson,
+  attemptLesson,
 } from "../controllers/student/student.lesson.controller.js";
 import { myProgress } from "../controllers/student/student.progress.controller.js";
 import {
-    listQuizzes,
-    getQuiz,
-    attemptQuiz,
+  listQuizzes,
+  getQuiz,
+  attemptQuiz,
 } from "../controllers/student/student.quiz.controller.js";
 
 const router = Router();

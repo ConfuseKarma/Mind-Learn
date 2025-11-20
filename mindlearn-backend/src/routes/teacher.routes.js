@@ -2,18 +2,18 @@
 import { Router } from "express";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 import {
-    listMyLessons,
-    getMyLesson,
-    createLessonAsTeacher,
-    updateMyLesson,
-    deleteMyLesson,
+  listMyLessons,
+  getMyLesson,
+  createLessonAsTeacher,
+  updateMyLesson,
+  deleteMyLesson,
 } from "../controllers/teacher/teacher.lesson.controller.js";
 import {
-    listMyQuizzes,
-    getMyQuiz,
-    createQuizAsTeacher,
-    updateMyQuiz,
-    deleteMyQuiz,
+  listMyQuizzes,
+  getMyQuiz,
+  createQuizAsTeacher,
+  updateMyQuiz,
+  deleteMyQuiz,
 } from "../controllers/teacher/teacher.quiz.controller.js";
 
 const router = Router();
