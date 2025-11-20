@@ -1,60 +1,60 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../db.js";
+// models/index.js
+import { User } from "./User.js";
+import { Theme } from "./Theme.js";
+import { Lesson } from "./Lesson.js";
+import { Question } from "./Question.js";
+import { Option } from "./Option.js";
+import { Attempt } from "./Attempt.js";
+import { Badge } from "./Badge.js";
+import { UserBadge } from "./UserBadge.js";
+import { Quiz } from "./Quiz.js";
+import { AuditLog } from "./AuditLog.js";
 
-export const User = sequelize.define("User", {
-  name: { type: DataTypes.STRING, allowNull: false },
-  email: { type: DataTypes.STRING, allowNull: false, unique: true },
-  passwordHash: { type: DataTypes.STRING, allowNull: false },
-});
-
-export const Theme = sequelize.define("Theme", {
-  name: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.TEXT },
-});
-
-export const Lesson = sequelize.define("Lesson", {
-  title: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.TEXT },
-  difficulty: { type: DataTypes.INTEGER, defaultValue: 1 },
-});
-
-export const Question = sequelize.define("Question", {
-  text: { type: DataTypes.TEXT, allowNull: false },
-});
-
-export const Option = sequelize.define("Option", {
-  text: { type: DataTypes.TEXT, allowNull: false },
-  isCorrect: { type: DataTypes.BOOLEAN, defaultValue: false },
-});
-
-export const Attempt = sequelize.define("Attempt", {
-  score: { type: DataTypes.INTEGER, allowNull: false },
-  total: { type: DataTypes.INTEGER, allowNull: false },
-});
-
-export const Badge = sequelize.define("Badge", {
-  code: { type: DataTypes.STRING, unique: true, allowNull: false },
-  name: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.TEXT },
-});
-
-export const UserBadge = sequelize.define("UserBadge", {}, { timestamps: true });
-
-// Relations
+// Theme - Lesson
 Theme.hasMany(Lesson, { onDelete: "CASCADE" });
 Lesson.belongsTo(Theme);
 
+// Teacher que criou a Lesson
+User.hasMany(Lesson, {
+    as: "LessonsTaught",
+    foreignKey: "TeacherId",
+        onDelete: "SET NULL",
+});
+Lesson.belongsTo(User, { as: "Teacher", foreignKey: "TeacherId" });
+
+// Lesson - Question
 Lesson.hasMany(Question, { onDelete: "CASCADE" });
 Question.belongsTo(Lesson);
 
+// Quiz - Question
+Quiz.hasMany(Question, { onDelete: "CASCADE" });
+Question.belongsTo(Quiz);
+
+// Teacher que criou o Quiz
+User.hasMany(Quiz, {
+    as: "QuizzesAuthored",
+    foreignKey: "AuthorId",
+        onDelete: "SET NULL",
+});
+Quiz.belongsTo(User, { as: "Author", foreignKey: "AuthorId" });
+
+// Question - Option
 Question.hasMany(Option, { onDelete: "CASCADE" });
 Option.belongsTo(Question);
 
+// User - Attempt
 User.hasMany(Attempt, { onDelete: "CASCADE" });
 Attempt.belongsTo(User);
+
+// Lesson - Attempt
 Lesson.hasMany(Attempt, { onDelete: "CASCADE" });
 Attempt.belongsTo(Lesson);
 
+// Quiz - Attempt
+Quiz.hasMany(Attempt, { onDelete: "CASCADE" });
+Attempt.belongsTo(Quiz);
+
+// Badges
 User.belongsToMany(Badge, { through: UserBadge });
 Badge.belongsToMany(User, { through: UserBadge });
 
@@ -62,3 +62,20 @@ UserBadge.belongsTo(User);
 UserBadge.belongsTo(Badge);
 User.hasMany(UserBadge, { onDelete: "CASCADE" });
 Badge.hasMany(UserBadge, { onDelete: "CASCADE" });
+
+// AuditLog
+User.hasMany(AuditLog, { foreignKey: "userId", onDelete: "SET NULL" });
+AuditLog.belongsTo(User, { foreignKey: "userId" });
+
+export {
+    User,
+    Theme,
+    Lesson,
+    Question,
+    Option,
+    Attempt,
+    Badge,
+    UserBadge,
+    Quiz,
+    AuditLog,
+};

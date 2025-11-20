@@ -1,7 +1,67 @@
+// routes/admin.routes.js
 import { Router } from "express";
-import { requireAdmin } from "../middleware/auth.js";
-import { createTheme, createLesson } from "../controllers/adminController.js";
+import { requireAuth, requireRole } from "../middleware/auth.js";
+
+import {
+    listUsers,
+    getUserAdmin,
+    updateUserRole,
+    deleteUser,
+} from "../controllers/admin/admin.user.controller.js";
+
+import {
+    listThemesAdmin,
+    getThemeAdmin,
+    createThemeAdmin,
+    updateThemeAdmin,
+    deleteThemeAdmin,
+} from "../controllers/admin/admin.theme.controller.js";
+
+import {
+    listLessonsAdmin,
+    getLessonAdmin,
+    createLessonAdmin,
+    updateLessonAdmin,
+    deleteLessonAdmin,
+} from "../controllers/admin/admin.lesson.controller.js";
+
+import {
+    listQuizzesAdmin,
+    getQuizAdmin,
+    adminCreateQuiz,
+    adminUpdateQuiz,
+    adminDeleteQuiz,
+} from "../controllers/admin/admin.quiz.controller.js";
+
 const router = Router();
-router.post("/theme", requireAdmin, createTheme);
-router.post("/lesson", requireAdmin, createLesson);
+
+router.use(requireAuth, requireRole("admin"));
+
+// Users
+router.get("/users", listUsers);
+router.get("/users/:id", getUserAdmin);
+router.patch("/users/:id/role", updateUserRole);
+router.delete("/users/:id", deleteUser);
+
+// Themes
+router.get("/themes", listThemesAdmin);
+router.get("/themes/:id", getThemeAdmin);
+router.post("/themes", createThemeAdmin);
+router.put("/themes/:id", updateThemeAdmin);
+router.delete("/themes/:id", deleteThemeAdmin);
+
+// Lessons
+router.get("/lessons", listLessonsAdmin);
+router.get("/lessons/:id", getLessonAdmin);
+router.post("/lessons", createLessonAdmin);
+router.put("/lessons/:id", updateLessonAdmin);
+router.delete("/lessons/:id", deleteLessonAdmin);
+
+// Quizzes
+router.get("/quizzes", listQuizzesAdmin);
+router.get("/quizzes/:id", getQuizAdmin);
+router.post("/quizzes", adminCreateQuiz);
+router.put("/quizzes/:id", adminUpdateQuiz);
+router.delete("/quizzes/:id", adminDeleteQuiz);
+
 export default router;

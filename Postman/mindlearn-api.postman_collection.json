@@ -1,0 +1,1256 @@
+{
+	"info": {
+		"_postman_id": "8d4c111c-98a2-4adb-86d1-19ff9e5dde80",
+		"name": "MindLearn API",
+		"description": "Coleção completa para testar MindLearn API (v1) com roles admin, teacher e student.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34298330"
+	},
+	"item": [
+		{
+			"name": "System",
+			"item": [
+				{
+					"name": "Root /",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{root_url}}/",
+							"host": [
+								"{{root_url}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{root_url}}/health",
+							"host": [
+								"{{root_url}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup (Student default)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"New User\",\n  \"email\": \"newuser@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  const data = pm.response.json();",
+									"  if (data.token) {",
+									"    pm.environment.set('adminToken', data.token);",
+									"  }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Teacher)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  const data = pm.response.json();",
+									"  if (data.token) {",
+									"    pm.environment.set('teacherToken', data.token);",
+									"  }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{teacherEmail}}\",\n  \"password\": \"{{teacherPassword}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Student)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"  const data = pm.response.json();",
+									"  if (data.token) {",
+									"    pm.environment.set('studentToken', data.token);",
+									"  }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"password\": \"{{studentPassword}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Me",
+			"item": [
+				{
+					"name": "Get Me (perfil logado)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin - Users CRUD",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Role",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": \"teacher\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users/3/role",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"3",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin - Themes CRUD",
+			"item": [
+				{
+					"name": "List Themes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/themes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"themes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Theme by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/themes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"themes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Theme",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Advanced Reading\",\n  \"description\": \"Admin created theme\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/themes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"themes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Theme",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Advanced Reading Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/themes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"themes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Theme",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/themes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"themes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin - Lessons CRUD",
+			"item": [
+				{
+					"name": "List Lessons",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/lessons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lesson by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/lessons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Lesson",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"themeId\": 1,\n  \"title\": \"Admin Lesson\",\n  \"description\": \"Lesson created by admin\",\n  \"difficulty\": 1,\n  \"questions\": [\n    {\n      \"text\": \"Example question?\",\n      \"options\": [\n        { \"text\": \"Yes\", \"isCorrect\": true },\n        { \"text\": \"No\", \"isCorrect\": false }\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/lessons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Lesson",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Admin Lesson Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/lessons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Lesson",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/lessons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin - Quizzes CRUD",
+			"item": [
+				{
+					"name": "List Quizzes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/quizzes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"quizzes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quiz by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/quizzes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"quizzes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Quiz",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Admin Quiz\",\n  \"description\": \"Quiz created by admin\",\n  \"difficulty\": 1,\n  \"questions\": [\n    {\n      \"text\": \"Admin question?\",\n      \"options\": [\n        { \"text\": \"Yes\", \"isCorrect\": true },\n        { \"text\": \"No\", \"isCorrect\": false }\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/quizzes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"quizzes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Quiz",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Admin Quiz Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/quizzes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"quizzes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Quiz",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/quizzes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"quizzes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teacher - Lessons CRUD",
+			"item": [
+				{
+					"name": "List My Lessons",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/teacher/lessons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Lesson",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/teacher/lessons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Lesson (Teacher)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"themeId\": 1,\n  \"title\": \"Teacher Lesson\",\n  \"description\": \"Lesson created by teacher\",\n  \"difficulty\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teacher/lessons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update My Lesson",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Teacher Lesson Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teacher/lessons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete My Lesson",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/teacher/lessons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teacher - Quizzes CRUD",
+			"item": [
+				{
+					"name": "List My Quizzes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/teacher/quizzes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"quizzes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Quiz",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/teacher/quizzes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"quizzes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Quiz (Teacher)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Teacher Quiz\",\n  \"description\": \"Quiz created by teacher\",\n  \"difficulty\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teacher/quizzes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"quizzes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update My Quiz",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Teacher Quiz Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teacher/quizzes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"quizzes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete My Quiz",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{teacherToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/teacher/quizzes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teacher",
+								"quizzes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student - Learning",
+			"item": [
+				{
+					"name": "List Themes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/themes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"themes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Lessons by Theme",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/themes/1/lessons",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"themes",
+								"1",
+								"lessons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lesson",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/lessons/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"lessons",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt Lesson",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"answers\": [\n    { \"questionId\": 1, \"optionId\": 1 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/student/lessons/1/attempt",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"lessons",
+								"1",
+								"attempt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Quizzes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/quizzes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"quizzes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quiz",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/quizzes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"quizzes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attempt Quiz",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"answers\": [\n    { \"questionId\": 1, \"optionId\": 1 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/student/quizzes/1/attempt",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"quizzes",
+								"1",
+								"attempt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "My Progress",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/me/progress",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"me",
+								"progress"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

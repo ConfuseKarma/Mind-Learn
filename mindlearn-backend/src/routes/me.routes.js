@@ -1,6 +1,10 @@
+// routes/me.routes.js
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { myProgress } from "../controllers/progressController.js";
+import { getMe } from "../controllers/meController.js";
+
 const router = Router();
-router.get("/me", requireAuth, myProgress);
+
+router.get("/", requireAuth, getMe);
+
 export default router;
