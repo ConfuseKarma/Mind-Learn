@@ -1,12 +1,13 @@
 {
   "name": "mindlearn-backend",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "node --watch src/server.js",
     "start": "node src/server.js",
-    "seed": "node src/seed.js"
+    "db:seed": "node src/seed.js",
+    "db:seed:demo": "SEED_DEMO=true node src/seed.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

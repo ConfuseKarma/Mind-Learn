@@ -1,5 +1,6 @@
 // controllers/teacher/teacher.quiz.controller.js
 import { Quiz, Question, Option } from "../../models/index.js";
+import { sequelize } from "../../db.js";
 import { getPaginationParams, buildPagedResponse } from "../../utils/pagination.js";
 import { logAudit } from "../../utils/audit.js";
 
@@ -12,14 +13,14 @@ function validateQuizPayload(body) {
   return null;
 }
 
-// GET /teacher/quizzes
 export async function listMyQuizzes(req, res, next) {
   try {
     const pagination = getPaginationParams(req);
+    const where = { AuthorId: req.user.id };
 
     if (!pagination) {
       const quizzes = await Quiz.findAll({
-        where: { AuthorId: req.user.id },
+        where,
         attributes: ["id", "title", "description", "difficulty"],
         order: [["id", "ASC"]],
       });
@@ -28,7 +29,7 @@ export async function listMyQuizzes(req, res, next) {
 
     const { page, limit, offset } = pagination;
     const { rows, count } = await Quiz.findAndCountAll({
-      where: { AuthorId: req.user.id },
+      where,
       attributes: ["id", "title", "description", "difficulty"],
       order: [["id", "ASC"]],
       limit,
@@ -41,7 +42,6 @@ export async function listMyQuizzes(req, res, next) {
   }
 }
 
-// GET /teacher/quizzes/:id
 export async function getMyQuiz(req, res, next) {
   const id = Number(req.params.id);
 
@@ -61,7 +61,6 @@ export async function getMyQuiz(req, res, next) {
   }
 }
 
-// POST /teacher/quizzes
 export async function createQuizAsTeacher(req, res, next) {
   const error = validateQuizPayload(req.body);
   if (error) return res.status(400).json({ error });
@@ -88,6 +87,7 @@ export async function createQuizAsTeacher(req, res, next) {
               QuestionId: Q.id,
               text: o.text,
               isCorrect: !!o.isCorrect,
+              explanation: o.explanation || null,
             });
           }
         }
@@ -109,16 +109,20 @@ export async function createQuizAsTeacher(req, res, next) {
   }
 }
 
-// PUT /teacher/quizzes/:id
 export async function updateMyQuiz(req, res, next) {
   const id = Number(req.params.id);
-  const { title, description, difficulty } = req.body;
+  const { title, description, difficulty, questions } = req.body;
 
+  const t = await sequelize.transaction();
   try {
-    const quiz = await Quiz.findByPk(id);
-    if (!quiz) return res.status(404).json({ error: "Quiz not found" });
+    const quiz = await Quiz.findByPk(id, { transaction: t });
+    if (!quiz) {
+      await t.rollback();
+      return res.status(404).json({ error: "Quiz not found" });
+    }
 
     if (quiz.AuthorId !== req.user.id && req.user.role !== "admin") {
+      await t.rollback();
       return res.status(403).json({ error: "Forbidden" });
     }
 
@@ -126,7 +130,45 @@ export async function updateMyQuiz(req, res, next) {
     if (description !== undefined) quiz.description = description;
     if (difficulty !== undefined) quiz.difficulty = difficulty;
 
-    await quiz.save();
+    await quiz.save({ transaction: t });
+
+    if (Array.isArray(questions)) {
+      const oldQuestions = await Question.findAll({
+        where: { QuizId: quiz.id },
+        transaction: t,
+      });
+      const qIds = oldQuestions.map((q) => q.id);
+
+      if (qIds.length) {
+        await Option.destroy({ where: { QuestionId: qIds }, transaction: t });
+      }
+      await Question.destroy({ where: { QuizId: quiz.id }, transaction: t });
+
+      for (const q of questions) {
+        const Q = await Question.create(
+          {
+            QuizId: quiz.id,
+            text: q.text,
+          },
+          { transaction: t },
+        );
+        if (Array.isArray(q.options)) {
+          for (const o of q.options) {
+            await Option.create(
+              {
+                QuestionId: Q.id,
+                text: o.text,
+                isCorrect: !!o.isCorrect,
+                explanation: o.explanation || null,
+              },
+              { transaction: t },
+            );
+          }
+        }
+      }
+    }
+
+    await t.commit();
 
     await logAudit(req.user, "TEACHER_UPDATE_QUIZ", {
       quizId: quiz.id,
@@ -138,11 +180,11 @@ export async function updateMyQuiz(req, res, next) {
 
     res.json(full);
   } catch (e) {
+    await t.rollback();
     next(e);
   }
 }
 
-// DELETE /teacher/quizzes/:id
 export async function deleteMyQuiz(req, res, next) {
   const id = Number(req.params.id);
 

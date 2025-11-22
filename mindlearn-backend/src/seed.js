@@ -3,148 +3,133 @@ import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { sequelize } from "./db.js";
 import { User, Theme, Lesson, Question, Option, Badge, Quiz } from "./models/index.js";
+import { demoQuestionBank } from "./questionBank.demo.js";
 
 async function seed() {
   await sequelize.authenticate();
   await sequelize.sync({ force: true });
 
-  // Badges base
   await Badge.bulkCreate([
     {
       code: "FIRST_STEPS",
-      name: "First Steps",
-      description: "Completed first lesson or quiz attempt",
+      name: "Primeiros Passos",
+      description: "Concluiu a primeira tentativa de lição ou teste.",
     },
     {
       code: "PERFECT_SCORE",
-      name: "Perfect Score",
-      description: "Achieved 100% in a lesson or quiz",
+      name: "Pontuação Perfeita",
+      description: "Acertou 100% em uma lição ou teste.",
     },
   ]);
 
-  // Usuários base
+  const SEED_DEMO = process.env.SEED_DEMO === "true";
+
+  if (!SEED_DEMO) {
+    console.log("Seed básico concluído (schema + badges).");
+    console.log(
+      "Defina SEED_DEMO=true para popular usuários, temas, lições, provas e questões de demonstração.",
+    );
+    process.exit(0);
+  }
+
   const admin = await User.create({
-    name: "Admin User",
+    name: "Administrador",
     email: "admin@example.com",
     passwordHash: bcrypt.hashSync("admin123", 10),
     role: "admin",
   });
 
   const teacher = await User.create({
-    name: "Teacher User",
+    name: "Professor Demo",
     email: "teacher@example.com",
     passwordHash: bcrypt.hashSync("teacher123", 10),
     role: "teacher",
   });
 
   const student = await User.create({
-    name: "Demo Student",
+    name: "Estudante Demo",
     email: "demo@example.com",
     passwordHash: bcrypt.hashSync("secret", 10),
     role: "student",
   });
 
-  // Themes e Lessons
-  const reading = await Theme.create({
-    name: "Reading Basics",
-    description: "Foundational comprehension skills",
-  });
-  const critical = await Theme.create({
-    name: "Critical Interpretation",
-    description: "Inference and intent",
-  });
+  const themeRecords = [];
 
-  const l1 = await Lesson.create({
-    ThemeId: reading.id,
-    TeacherId: teacher.id,
-    title: "Identify subject",
-    description: "Understand basic sentence parts",
-    difficulty: 1,
-  });
+  for (const themeDef of demoQuestionBank.themes) {
+    const theme = await Theme.create({
+      name: themeDef.name,
+      description: themeDef.description,
+    });
+    themeRecords.push(theme);
 
-  const q1 = await Question.create({
-    LessonId: l1.id,
-    text: 'In the sentence "O sol nasce a leste", what is the subject?',
-  });
+    if (Array.isArray(themeDef.lessons)) {
+      for (const lessonDef of themeDef.lessons) {
+        const lesson = await Lesson.create({
+          ThemeId: theme.id,
+          TeacherId: teacher.id,
+          title: lessonDef.title,
+          description: lessonDef.description,
+          difficulty: lessonDef.difficulty || 1,
+        });
 
-  await Option.bulkCreate([
-    { QuestionId: q1.id, text: "O sol", isCorrect: true },
-    { QuestionId: q1.id, text: "nasce", isCorrect: false },
-    { QuestionId: q1.id, text: "a leste", isCorrect: false },
-  ]);
+        if (Array.isArray(lessonDef.questions)) {
+          for (const qDef of lessonDef.questions) {
+            const question = await Question.create({
+              LessonId: lesson.id,
+              text: qDef.text,
+            });
 
-  const q2 = await Question.create({
-    LessonId: l1.id,
-    text: "What is the purpose of a text conclusion?",
-  });
+            if (Array.isArray(qDef.options)) {
+              for (const opt of qDef.options) {
+                await Option.create({
+                  QuestionId: question.id,
+                  text: opt.text,
+                  isCorrect: !!opt.isCorrect,
+                  explanation: opt.explanation || null,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
-  await Option.bulkCreate([
-    {
-      QuestionId: q2.id,
-      text: "Summarize and close the main ideas",
-      isCorrect: true,
-    },
-    { QuestionId: q2.id, text: "Introduce the topic", isCorrect: false },
-    { QuestionId: q2.id, text: "List references", isCorrect: false },
-  ]);
+  if (Array.isArray(demoQuestionBank.quizzes)) {
+    for (const quizDef of demoQuestionBank.quizzes) {
+      const quiz = await Quiz.create({
+        title: quizDef.title,
+        description: quizDef.description,
+        difficulty: quizDef.difficulty || 1,
+        AuthorId: teacher.id,
+      });
 
-  const l2 = await Lesson.create({
-    ThemeId: critical.id,
-    TeacherId: teacher.id,
-    title: "Main idea vs details",
-    description: "Identify main ideas in a paragraph",
-    difficulty: 2,
-  });
+      if (Array.isArray(quizDef.questions)) {
+        for (const qDef of quizDef.questions) {
+          const question = await Question.create({
+            QuizId: quiz.id,
+            text: qDef.text,
+          });
 
-  const q3 = await Question.create({
-    LessonId: l2.id,
-    text: "Which sentence best states the main idea?",
-  });
+          if (Array.isArray(qDef.options)) {
+            for (const opt of qDef.options) {
+              await Option.create({
+                QuestionId: question.id,
+                text: opt.text,
+                isCorrect: !!opt.isCorrect,
+                explanation: opt.explanation || null,
+              });
+            }
+          }
+        }
+      }
+    }
+  }
 
-  await Option.bulkCreate([
-    {
-      QuestionId: q3.id,
-      text: "The central point that the paragraph develops",
-      isCorrect: true,
-    },
-    { QuestionId: q3.id, text: "A supporting detail", isCorrect: false },
-    { QuestionId: q3.id, text: "An unrelated example", isCorrect: false },
-  ]);
-
-  // Quiz demo
-  const quiz = await Quiz.create({
-    title: "Reading Basics Quiz",
-    description: "Quick quiz about basic reading skills",
-    difficulty: 1,
-  });
-
-  const qq1 = await Question.create({
-    QuizId: quiz.id,
-    text: "What is a paragraph main idea?",
-  });
-
-  await Option.bulkCreate([
-    {
-      QuestionId: qq1.id,
-      text: "The central concept that unifies the paragraph",
-      isCorrect: true,
-    },
-    {
-      QuestionId: qq1.id,
-      text: "Any isolated detail",
-      isCorrect: false,
-    },
-    {
-      QuestionId: qq1.id,
-      text: "The last sentence only",
-      isCorrect: false,
-    },
-  ]);
-
-  console.log("Seed complete");
+  console.log("Seed completo com banco de questões, temas, lições e provas em português.");
   console.log("Admin:    admin@example.com / admin123");
-  console.log("Teacher:  teacher@example.com / teacher123");
-  console.log("Student:  demo@example.com / secret");
+  console.log("Professor: teacher@example.com / teacher123");
+  console.log("Aluno:    demo@example.com / secret");
   process.exit(0);
 }
 

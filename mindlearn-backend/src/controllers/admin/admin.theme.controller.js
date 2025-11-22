@@ -3,7 +3,6 @@ import { Theme, Lesson } from "../../models/index.js";
 import { getPaginationParams, buildPagedResponse } from "../../utils/pagination.js";
 import { logAudit } from "../../utils/audit.js";
 
-// GET /admin/themes
 export async function listThemesAdmin(req, res, next) {
   try {
     const pagination = getPaginationParams(req);
@@ -30,7 +29,6 @@ export async function listThemesAdmin(req, res, next) {
   }
 }
 
-// GET /admin/themes/:id
 export async function getThemeAdmin(req, res, next) {
   const id = Number(req.params.id);
 
@@ -49,7 +47,6 @@ export async function getThemeAdmin(req, res, next) {
   }
 }
 
-// POST /admin/themes
 export async function createThemeAdmin(req, res, next) {
   const { name, description } = req.body;
   if (!name) return res.status(400).json({ error: "name required" });
@@ -68,7 +65,6 @@ export async function createThemeAdmin(req, res, next) {
   }
 }
 
-// PUT /admin/themes/:id
 export async function updateThemeAdmin(req, res, next) {
   const id = Number(req.params.id);
   const { name, description } = req.body;
@@ -92,7 +88,6 @@ export async function updateThemeAdmin(req, res, next) {
   }
 }
 
-// DELETE /admin/themes/:id
 export async function deleteThemeAdmin(req, res, next) {
   const id = Number(req.params.id);
 
@@ -101,7 +96,7 @@ export async function deleteThemeAdmin(req, res, next) {
     if (!theme) return res.status(404).json({ error: "Theme not found" });
 
     const name = theme.name;
-    await theme.destroy(); // Lessons são apagadas em cascata
+    await theme.destroy();
 
     await logAudit(req.user, "ADMIN_DELETE_THEME", {
       themeId: id,

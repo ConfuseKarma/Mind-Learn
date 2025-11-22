@@ -1,10 +1,9 @@
 // controllers/admin/admin.lesson.controller.js
 import { Lesson, Theme, User, Question, Option } from "../../models/index.js";
+import { sequelize } from "../../db.js";
 import { getPaginationParams, buildPagedResponse } from "../../utils/pagination.js";
 import { logAudit } from "../../utils/audit.js";
 
-// GET /admin/lessons
-// filtros opcionais: ?themeId=1&teacherId=2
 export async function listLessonsAdmin(req, res, next) {
   try {
     const pagination = getPaginationParams(req);
@@ -37,7 +36,6 @@ export async function listLessonsAdmin(req, res, next) {
   }
 }
 
-// GET /admin/lessons/:id
 export async function getLessonAdmin(req, res, next) {
   const id = Number(req.params.id);
 
@@ -57,8 +55,6 @@ export async function getLessonAdmin(req, res, next) {
   }
 }
 
-// POST /admin/lessons
-// admin pode opcionalmente atribuir TeacherId
 export async function createLessonAdmin(req, res, next) {
   const { themeId, teacherId, title, description, difficulty, questions } = req.body;
 
@@ -87,6 +83,7 @@ export async function createLessonAdmin(req, res, next) {
               QuestionId: Q.id,
               text: o.text,
               isCorrect: !!o.isCorrect,
+              explanation: o.explanation || null,
             });
           }
         }
@@ -109,14 +106,17 @@ export async function createLessonAdmin(req, res, next) {
   }
 }
 
-// PUT /admin/lessons/:id
 export async function updateLessonAdmin(req, res, next) {
   const id = Number(req.params.id);
-  const { themeId, teacherId, title, description, difficulty } = req.body;
+  const { themeId, teacherId, title, description, difficulty, questions } = req.body;
 
+  const t = await sequelize.transaction();
   try {
-    const lesson = await Lesson.findByPk(id);
-    if (!lesson) return res.status(404).json({ error: "Lesson not found" });
+    const lesson = await Lesson.findByPk(id, { transaction: t });
+    if (!lesson) {
+      await t.rollback();
+      return res.status(404).json({ error: "Lesson not found" });
+    }
 
     if (themeId !== undefined) lesson.ThemeId = themeId;
     if (teacherId !== undefined) lesson.TeacherId = teacherId;
@@ -124,7 +124,45 @@ export async function updateLessonAdmin(req, res, next) {
     if (description !== undefined) lesson.description = description;
     if (difficulty !== undefined) lesson.difficulty = difficulty;
 
-    await lesson.save();
+    await lesson.save({ transaction: t });
+
+    if (Array.isArray(questions)) {
+      const oldQuestions = await Question.findAll({
+        where: { LessonId: lesson.id },
+        transaction: t,
+      });
+      const qIds = oldQuestions.map((q) => q.id);
+
+      if (qIds.length) {
+        await Option.destroy({ where: { QuestionId: qIds }, transaction: t });
+      }
+      await Question.destroy({ where: { LessonId: lesson.id }, transaction: t });
+
+      for (const q of questions) {
+        const Q = await Question.create(
+          {
+            LessonId: lesson.id,
+            text: q.text,
+          },
+          { transaction: t },
+        );
+        if (Array.isArray(q.options)) {
+          for (const o of q.options) {
+            await Option.create(
+              {
+                QuestionId: Q.id,
+                text: o.text,
+                isCorrect: !!o.isCorrect,
+                explanation: o.explanation || null,
+              },
+              { transaction: t },
+            );
+          }
+        }
+      }
+    }
+
+    await t.commit();
 
     await logAudit(req.user, "ADMIN_UPDATE_LESSON", {
       lessonId: lesson.id,
@@ -136,11 +174,11 @@ export async function updateLessonAdmin(req, res, next) {
 
     res.json(full);
   } catch (e) {
+    await t.rollback();
     next(e);
   }
 }
 
-// DELETE /admin/lessons/:id
 export async function deleteLessonAdmin(req, res, next) {
   const id = Number(req.params.id);
 
@@ -148,7 +186,7 @@ export async function deleteLessonAdmin(req, res, next) {
     const lesson = await Lesson.findByPk(id);
     if (!lesson) return res.status(404).json({ error: "Lesson not found" });
 
-    await lesson.destroy(); // Questions, Options e Attempts em cascata
+    await lesson.destroy();
 
     await logAudit(req.user, "ADMIN_DELETE_LESSON", {
       lessonId: id,

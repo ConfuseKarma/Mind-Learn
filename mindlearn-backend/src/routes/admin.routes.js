@@ -37,27 +37,23 @@ const router = Router();
 
 router.use(requireAuth, requireRole("admin"));
 
-// Users
 router.get("/users", listUsers);
 router.get("/users/:id", getUserAdmin);
 router.patch("/users/:id/role", updateUserRole);
 router.delete("/users/:id", deleteUser);
 
-// Themes
 router.get("/themes", listThemesAdmin);
 router.get("/themes/:id", getThemeAdmin);
 router.post("/themes", createThemeAdmin);
 router.put("/themes/:id", updateThemeAdmin);
 router.delete("/themes/:id", deleteThemeAdmin);
 
-// Lessons
 router.get("/lessons", listLessonsAdmin);
 router.get("/lessons/:id", getLessonAdmin);
 router.post("/lessons", createLessonAdmin);
 router.put("/lessons/:id", updateLessonAdmin);
 router.delete("/lessons/:id", deleteLessonAdmin);
 
-// Quizzes
 router.get("/quizzes", listQuizzesAdmin);
 router.get("/quizzes/:id", getQuizAdmin);
 router.post("/quizzes", adminCreateQuiz);

@@ -10,11 +10,9 @@ import { UserBadge } from "./UserBadge.js";
 import { Quiz } from "./Quiz.js";
 import { AuditLog } from "./AuditLog.js";
 
-// Theme - Lesson
 Theme.hasMany(Lesson, { onDelete: "CASCADE" });
 Lesson.belongsTo(Theme);
 
-// Teacher que criou a Lesson
 User.hasMany(Lesson, {
   as: "LessonsTaught",
   foreignKey: "TeacherId",
@@ -22,15 +20,21 @@ User.hasMany(Lesson, {
 });
 Lesson.belongsTo(User, { as: "Teacher", foreignKey: "TeacherId" });
 
-// Lesson - Question
+Lesson.belongsTo(Lesson, {
+  as: "Prerequisite",
+  foreignKey: "prerequisiteLessonId",
+});
+Lesson.hasMany(Lesson, {
+  as: "Dependents",
+  foreignKey: "prerequisiteLessonId",
+});
+
 Lesson.hasMany(Question, { onDelete: "CASCADE" });
 Question.belongsTo(Lesson);
 
-// Quiz - Question
 Quiz.hasMany(Question, { onDelete: "CASCADE" });
 Question.belongsTo(Quiz);
 
-// Teacher que criou o Quiz
 User.hasMany(Quiz, {
   as: "QuizzesAuthored",
   foreignKey: "AuthorId",
@@ -38,23 +42,18 @@ User.hasMany(Quiz, {
 });
 Quiz.belongsTo(User, { as: "Author", foreignKey: "AuthorId" });
 
-// Question - Option
 Question.hasMany(Option, { onDelete: "CASCADE" });
 Option.belongsTo(Question);
 
-// User - Attempt
 User.hasMany(Attempt, { onDelete: "CASCADE" });
 Attempt.belongsTo(User);
 
-// Lesson - Attempt
 Lesson.hasMany(Attempt, { onDelete: "CASCADE" });
 Attempt.belongsTo(Lesson);
 
-// Quiz - Attempt
 Quiz.hasMany(Attempt, { onDelete: "CASCADE" });
 Attempt.belongsTo(Quiz);
 
-// Badges
 User.belongsToMany(Badge, { through: UserBadge });
 Badge.belongsToMany(User, { through: UserBadge });
 
@@ -63,7 +62,6 @@ UserBadge.belongsTo(Badge);
 User.hasMany(UserBadge, { onDelete: "CASCADE" });
 Badge.hasMany(UserBadge, { onDelete: "CASCADE" });
 
-// AuditLog
 User.hasMany(AuditLog, { foreignKey: "userId", onDelete: "SET NULL" });
 AuditLog.belongsTo(User, { foreignKey: "userId" });
 

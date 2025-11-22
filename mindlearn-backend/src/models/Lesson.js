@@ -6,4 +6,9 @@ export const Lesson = sequelize.define("Lesson", {
   title: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.TEXT },
   difficulty: { type: DataTypes.INTEGER, defaultValue: 1 },
+
+  prerequisiteLessonId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
 });

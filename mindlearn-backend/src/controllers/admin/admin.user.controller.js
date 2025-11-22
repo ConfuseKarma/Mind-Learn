@@ -3,7 +3,6 @@ import { User } from "../../models/index.js";
 import { getPaginationParams, buildPagedResponse } from "../../utils/pagination.js";
 import { logAudit } from "../../utils/audit.js";
 
-// GET /admin/users
 export async function listUsers(req, res, next) {
   try {
     const pagination = getPaginationParams(req);
@@ -30,7 +29,6 @@ export async function listUsers(req, res, next) {
   }
 }
 
-// GET /admin/users/:id
 export async function getUserAdmin(req, res, next) {
   const id = Number(req.params.id);
 
@@ -45,7 +43,6 @@ export async function getUserAdmin(req, res, next) {
   }
 }
 
-// PATCH /admin/users/:id/role
 export async function updateUserRole(req, res, next) {
   const id = Number(req.params.id);
   const { role } = req.body;
@@ -74,11 +71,9 @@ export async function updateUserRole(req, res, next) {
   }
 }
 
-// DELETE /admin/users/:id
 export async function deleteUser(req, res, next) {
   const id = Number(req.params.id);
 
-  // opcional: impedir auto delete
   if (id === req.user.id) {
     return res.status(400).json({ error: "You cannot delete your own user" });
   }
@@ -89,7 +84,7 @@ export async function deleteUser(req, res, next) {
 
     const oldRole = user.role;
 
-    await user.destroy(); // Attempts e UserBadges em cascata
+    await user.destroy();
 
     await logAudit(req.user, "ADMIN_DELETE_USER", {
       targetUserId: id,

@@ -64,7 +64,10 @@ export async function getLesson(req, res, next) {
     const lesson = await Lesson.findByPk(id, {
       include: {
         model: Question,
-        include: { model: Option, attributes: ["id", "text"] },
+        include: {
+          model: Option,
+          attributes: ["id", "text"],
+        },
       },
     });
     if (!lesson) return res.status(404).json({ error: "Lesson not found" });
@@ -84,27 +87,59 @@ export async function attemptLesson(req, res, next) {
 
   try {
     const lesson = await Lesson.findByPk(id, {
-      include: { model: Question, include: Option },
+      include: {
+        model: Question,
+        include: Option,
+      },
     });
     if (!lesson) return res.status(404).json({ error: "Lesson not found" });
 
-    let score = 0;
     const map = new Map(answers.map((a) => [Number(a.questionId), Number(a.optionId)]));
 
-    for (const q of lesson.Questions) {
-      const chosen = map.get(q.id);
-      if (!chosen) continue;
-      const opt = q.Options.find((o) => o.id === chosen);
-      if (opt?.isCorrect) score += 1;
-    }
+    let score = 0;
+
+    const details = lesson.Questions.map((q) => {
+      const chosenOptionId = map.get(q.id) ?? null;
+      const correctOption = q.Options.find((o) => o.isCorrect) || null;
+
+      const isCorrect =
+        chosenOptionId != null &&
+        correctOption &&
+        Number(chosenOptionId) === Number(correctOption.id);
+
+      if (isCorrect) {
+        score += 1;
+      }
+
+      return {
+        questionId: q.id,
+        chosenOptionId,
+        isCorrect,
+        correctOption: correctOption
+          ? {
+              id: correctOption.id,
+              text: correctOption.text,
+              explanation: correctOption.explanation || null,
+            }
+          : null,
+      };
+    });
 
     const total = lesson.Questions.length;
+
+    const normalizedAnswers = Array.isArray(answers)
+      ? answers.map((a) => ({
+          questionId: Number(a.questionId),
+          optionId: Number(a.optionId),
+        }))
+      : [];
 
     await Attempt.create({
       UserId: req.user.id,
       LessonId: lesson.id,
       score,
       total,
+      answersJson: JSON.stringify(normalizedAnswers),
     });
 
     const passing = Number(process.env.PASSING_SCORE_PERCENT || 70);
@@ -112,7 +147,6 @@ export async function attemptLesson(req, res, next) {
 
     let earnedBadge = null;
 
-    // Badge FIRST_STEPS - primeira tentativa de qualquer coisa
     const attemptsCount = await Attempt.count({
       where: { UserId: req.user.id },
     });
@@ -127,7 +161,6 @@ export async function attemptLesson(req, res, next) {
       }
     }
 
-    // Badge PERFECT_SCORE se gabarito cheio
     if (score === total && total > 0) {
       let b = await Badge.findOne({ where: { code: "PERFECT_SCORE" } });
       if (!b) {
@@ -144,7 +177,6 @@ export async function attemptLesson(req, res, next) {
       earnedBadge = earnedBadge || b.code;
     }
 
-    // Badge de completar tema
     if (passed) {
       const themeId = lesson.ThemeId;
       const lessonsInTheme = await Lesson.count({
@@ -182,7 +214,7 @@ export async function attemptLesson(req, res, next) {
       }
     }
 
-    res.json({ score, total, passed, earnedBadge });
+    res.json({ score, total, passed, earnedBadge, details });
   } catch (e) {
     next(e);
   }

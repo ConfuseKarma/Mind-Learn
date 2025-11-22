@@ -20,14 +20,12 @@ const router = Router();
 
 router.use(requireAuth, requireRole("teacher", "admin"));
 
-// Lessons
 router.get("/lessons", listMyLessons);
 router.get("/lessons/:id", getMyLesson);
 router.post("/lessons", createLessonAsTeacher);
 router.put("/lessons/:id", updateMyLesson);
 router.delete("/lessons/:id", deleteMyLesson);
 
-// Quizzes
 router.get("/quizzes", listMyQuizzes);
 router.get("/quizzes/:id", getMyQuiz);
 router.post("/quizzes", createQuizAsTeacher);

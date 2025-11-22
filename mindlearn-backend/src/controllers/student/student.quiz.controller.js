@@ -34,7 +34,10 @@ export async function getQuiz(req, res, next) {
     const quiz = await Quiz.findByPk(id, {
       include: {
         model: Question,
-        include: { model: Option, attributes: ["id", "text"] },
+        include: {
+          model: Option,
+          attributes: ["id", "text"],
+        },
       },
     });
     if (!quiz) return res.status(404).json({ error: "Quiz not found" });
@@ -44,6 +47,9 @@ export async function getQuiz(req, res, next) {
   }
 }
 
+// ===============================================
+// VERSÃO CORRIGIDA: attemptQuiz com "details"
+// ===============================================
 export async function attemptQuiz(req, res, next) {
   const id = Number(req.params.id);
   const { answers } = req.body;
@@ -54,27 +60,56 @@ export async function attemptQuiz(req, res, next) {
 
   try {
     const quiz = await Quiz.findByPk(id, {
-      include: { model: Question, include: Option },
+      include: { model: Question, include: Option }, // explanation vem aqui
     });
     if (!quiz) return res.status(404).json({ error: "Quiz not found" });
 
-    let score = 0;
     const answerMap = new Map(answers.map((a) => [Number(a.questionId), Number(a.optionId)]));
 
-    for (const q of quiz.Questions) {
-      const chosen = answerMap.get(q.id);
-      if (!chosen) continue;
-      const opt = q.Options.find((o) => o.id === chosen);
-      if (opt?.isCorrect) score += 1;
-    }
+    let score = 0;
+
+    const details = quiz.Questions.map((q) => {
+      const chosenOptionId = answerMap.get(q.id) ?? null;
+      const correctOption = q.Options.find((o) => o.isCorrect) || null;
+
+      const isCorrect =
+        chosenOptionId != null &&
+        correctOption &&
+        Number(chosenOptionId) === Number(correctOption.id);
+
+      if (isCorrect) {
+        score += 1;
+      }
+
+      return {
+        questionId: q.id,
+        chosenOptionId,
+        isCorrect,
+        correctOption: correctOption
+          ? {
+              id: correctOption.id,
+              text: correctOption.text,
+              explanation: correctOption.explanation || null,
+            }
+          : null,
+      };
+    });
 
     const total = quiz.Questions.length;
+
+    const normalizedAnswers = Array.isArray(answers)
+      ? answers.map((a) => ({
+          questionId: Number(a.questionId),
+          optionId: Number(a.optionId),
+        }))
+      : [];
 
     await Attempt.create({
       UserId: req.user.id,
       QuizId: quiz.id,
       score,
       total,
+      answersJson: JSON.stringify(normalizedAnswers),
     });
 
     let earnedBadge = null;
@@ -106,7 +141,7 @@ export async function attemptQuiz(req, res, next) {
       }
     }
 
-    res.json({ score, total, earnedBadge });
+    res.json({ score, total, earnedBadge, details });
   } catch (e) {
     next(e);
   }
