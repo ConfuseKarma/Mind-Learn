@@ -1,15 +1,15 @@
-// views/Lesson.jsx
+// views/Quiz.jsx
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../utils/api'
 import { useToast } from '../ui/ToastProvider.jsx'
 
-export default function Lesson() {
+export default function Quiz() {
   const { id } = useParams()
   const nav = useNavigate()
   const { showToast } = useToast()
 
-  const [lesson, setLesson] = useState(null)
+  const [quiz, setQuiz] = useState(null)
   const [answers, setAnswers] = useState({})
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -23,27 +23,27 @@ export default function Lesson() {
       setLoading(true)
       setError('')
       try {
-        const data = await api.lesson(id)
-        setLesson(data)
+        const data = await api.quiz(id)
+        setQuiz(data)
         setAnswers({})
         setMode('answer')
         setResult(null)
       } catch (e) {
-        setError(e.message || 'Falha ao carregar lição.')
+        setError(e.message || 'Falha ao carregar teste.')
       } finally {
         setLoading(false)
       }
     })()
   }, [id])
 
-  const totalQuestions = lesson?.Questions?.length || 0
+  const totalQuestions = quiz?.Questions?.length || 0
   const answeredCount = useMemo(
     () =>
-      lesson?.Questions?.reduce(
+      quiz?.Questions?.reduce(
         (acc, q) => (answers[q.id] ? acc + 1 : acc),
         0
       ) || 0,
-    [answers, lesson]
+    [answers, quiz]
   )
   const progressPct = totalQuestions
     ? Math.round((answeredCount / totalQuestions) * 100)
@@ -61,37 +61,17 @@ export default function Lesson() {
 
   function renderSummaryCard() {
     if (!result) return null
-
     const pct =
       result.total > 0 ? ((result.score * 100) / result.total).toFixed(1) : '0.0'
 
     return (
       <div className="card shadow">
-        <div className="question-meta">Resultado da lição</div>
+        <div className="question-meta">Resultado do teste</div>
         <div className="header" style={{ fontSize: 18 }}>
           Você fez {result.score}/{result.total} questões
         </div>
         <div className="space"></div>
-        <div className="row" style={{ justifyContent: 'space-between' }}>
-          <div className="sub muted">
-            Aproveitamento: <b>{pct}%</b>
-          </div>
-          {typeof result.passed === 'boolean' && (
-            <div
-              className="pill"
-              style={{
-                borderColor: result.passed
-                  ? 'var(--accent)'
-                  : 'var(--danger)',
-                background: result.passed
-                  ? 'rgba(34,197,94,0.12)'
-                  : 'rgba(239,68,68,0.12)'
-              }}
-            >
-              {result.passed ? 'Aprovado' : 'Não atingiu a nota mínima'}
-            </div>
-          )}
-        </div>
+        <div className="sub muted">Aproveitamento: <b>{pct}%</b></div>
         {result.earnedBadge && (
           <>
             <div className="space"></div>
@@ -119,11 +99,11 @@ export default function Lesson() {
 
     setSubmitting(true)
     try {
-      const r = await api.attempt(id, payload)
+      const r = await api.attemptQuiz(id, payload)
       setResult(r)
       setMode('review')
 
-      let msg = `Você fez ${r.score}/${r.total} nessa lição.`
+      let msg = `Você fez ${r.score}/${r.total} neste teste.`
       if (r.earnedBadge) msg += ` Medalha: ${r.earnedBadge}`
       msg += ' Veja o detalhamento por questão abaixo.'
       showToast(msg, 'success')
@@ -140,17 +120,17 @@ export default function Lesson() {
         Carregando...
       </div>
     )
-  if (error && !lesson) return <div className="danger">{error}</div>
-  if (!lesson) return null
+  if (error && !quiz) return <div className="danger">{error}</div>
+  if (!quiz) return null
 
   return (
     <div className="grid">
       <div className="card shadow">
-        <div className="question-meta">Lição</div>
+        <div className="question-meta">Teste</div>
         <div className="header" style={{ fontSize: 20 }}>
-          {lesson.title}
+          {quiz.title}
         </div>
-        <div className="muted sub">{lesson.description}</div>
+        <div className="muted sub">{quiz.description}</div>
         <div className="space"></div>
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <div className="sub muted">
@@ -171,7 +151,7 @@ export default function Lesson() {
 
       {mode === 'review' && renderSummaryCard()}
 
-      {lesson.Questions?.map((q, index) => {
+      {quiz.Questions?.map((q, index) => {
         const detail = mode === 'review' ? getDetailForQuestion(q.id) : null
 
         return (
@@ -222,7 +202,7 @@ export default function Lesson() {
 
                 if (!isReview && selected) {
                   borderColor = 'var(--primary)'
-                  background = 'rgba(37,99,235,0.18)'
+                  background = 'rgba(56,189,248,0.18)'
                 }
 
                 if (isReview && detailForQ) {
@@ -284,15 +264,15 @@ export default function Lesson() {
       {mode === 'review' && (
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <div className="muted sub">
-            Você pode revisar as explicações acima. Para refazer a lição, basta
+            Você pode revisar as explicações acima. Para refazer o teste, basta
             sair e entrar novamente.
           </div>
           <button
             type="button"
             className="btn"
-            onClick={() => nav('/themes')}
+            onClick={() => nav('/quizzes')}
           >
-            Voltar para temas
+            Voltar para testes
           </button>
         </div>
       )}

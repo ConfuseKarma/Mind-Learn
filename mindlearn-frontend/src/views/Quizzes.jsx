@@ -1,6 +1,6 @@
-// views/Lessons.jsx
+// views/Quizzes.jsx
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { api } from '../utils/api'
 
 function difficultyLabel(d) {
@@ -19,8 +19,7 @@ function difficultyColor(d) {
   return 'rgba(148,163,184,0.18)'
 }
 
-export default function Lessons() {
-  const { id } = useParams()
+export default function Quizzes() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -28,14 +27,14 @@ export default function Lessons() {
   useEffect(() => {
     ; (async () => {
       try {
-        setData(await api.lessonsByTheme(id))
+        setData(await api.quizzes())
       } catch (e) {
         setError(e.message)
       } finally {
         setLoading(false)
       }
     })()
-  }, [id])
+  }, [])
 
   if (loading)
     return (
@@ -47,15 +46,15 @@ export default function Lessons() {
 
   return (
     <div className="grid">
-      <div className="header">Lições</div>
+      <div className="header">Testes</div>
       <div className="muted sub">
-        Selecione uma lição para responder as questões e receber feedback.
+        Avaliações rápidas para revisar e consolidar o que você estudou.
       </div>
       <div className="grid cols-2">
-        {data.map((l) => (
+        {data.map((q) => (
           <Link
-            key={l.id}
-            to={`/lesson/${l.id}`}
+            key={q.id}
+            to={`/quizzes/${q.id}`}
             className="card shadow"
             style={{ textDecoration: 'none' }}
           >
@@ -69,41 +68,39 @@ export default function Lessons() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'rgba(59,130,246,0.12)',
+                    background: 'rgba(56,189,248,0.12)',
                     fontSize: 20
                   }}
                 >
-                  <span>📘</span>
+                  <span>🧩</span>
                 </div>
                 <div>
                   <div className="header" style={{ fontSize: 18 }}>
-                    {l.title}
+                    {q.title}
                   </div>
-                  <div className="muted sub">{l.description}</div>
+                  <div className="muted sub">{q.description}</div>
                 </div>
               </div>
               <div
                 className="badge"
                 style={{
-                  background: difficultyColor(l.difficulty),
+                  background: difficultyColor(q.difficulty),
                   borderColor: 'transparent',
                   fontSize: 12
                 }}
               >
-                {difficultyLabel(l.difficulty)}
+                {difficultyLabel(q.difficulty)}
               </div>
             </div>
             <div className="space"></div>
             <div className="row" style={{ justifyContent: 'space-between' }}>
-              <div className="muted sub">Lição ID: {l.id}</div>
-              <div className="link">Começar lição →</div>
+              <div className="muted sub">Teste ID: {q.id}</div>
+              <div className="link">Abrir teste →</div>
             </div>
           </Link>
         ))}
         {!data.length && (
-          <div className="muted">
-            Nenhuma lição disponível para este tema.
-          </div>
+          <div className="muted">Nenhum teste disponível ainda.</div>
         )}
       </div>
     </div>

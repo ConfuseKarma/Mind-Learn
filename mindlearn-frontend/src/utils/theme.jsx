@@ -1,15 +1,15 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
-const ThemeCtx = createContext({ theme:'night', setTheme: ()=>{} })
+const ThemeCtx = createContext({ theme: 'night', setTheme: () => { } })
 
-export function ThemeProvider({ children }){
-  const [theme, setTheme] = useState(()=>{
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('ml_theme')
     if (saved) return saved
     return document.documentElement.dataset.theme || 'night'
   })
 
-  useEffect(()=>{
+  useEffect(() => {
     document.documentElement.dataset.theme = theme
     localStorage.setItem('ml_theme', theme)
   }, [theme])
@@ -17,4 +17,4 @@ export function ThemeProvider({ children }){
   return <ThemeCtx.Provider value={{ theme, setTheme }}>{children}</ThemeCtx.Provider>
 }
 
-export function useTheme(){ return useContext(ThemeCtx) }
+export function useTheme() { return useContext(ThemeCtx) }
