@@ -1,3 +1,97 @@
+# **Projeto Mind&Learn** - **Relatório de Gestão de Projetos**
+
+## Integrantes
+Guilherme Rodrigues dos Santos, RA: 081220010
+
+Kauê de Souza Silva, RA: 081220003
+
+Marcos Felipe Correa Soares, RA: 081220020
+
+Roger Freitas Pereira RA: 081220023
+
+## 1. **Introdução**
+
+Este relatório apresenta a gestão do projeto **Mind&Learn**, uma aplicação educacional gamificada desenvolvida para combater o analfabetismo funcional no Brasil. O documento aborda os aspectos de **Gestão de Projetos** conforme as melhores práticas do **PMBOK**, com foco especial no **monitoramento e controle**, **gerenciamento de qualidade**, **gestão de riscos** e **análise de desempenho** do projeto.
+
+## 2. **Objetivo do Relatório**
+
+Este relatório tem como objetivo principal documentar e analisar a gestão do projeto Mind&Learn sob a perspectiva das melhores práticas do PMBOK, servindo como complemento aos relatórios específicos das demais disciplinas:
+
+- **Engenharia de Software**: Foco em metodologias ágeis, sprints e desenvolvimento técnico
+- **Redes de Computadores**: Abordagem técnica da infraestrutura e topologia de rede
+- **Gestão de Projetos (este documento)**: Análise de planejamento, controle, riscos e qualidade
+
+### 2.1 **Objetivos Específicos**
+- Documentar o processo de planejamento e execução do projeto
+- Analisar o desempenho através de métricas de controle (EVA, SPI, CPI)
+- Identificar lições aprendidas e oportunidades de melhoria
+- Demonstrar a aplicação prática dos conceitos do PMBOK em contexto real
+- Integrar as perspectivas interdisciplinares do projeto
+
+## 3. **Metodologia de Gestão**
+
+### 3.1 **Abordagem Híbrida PMBOK-Scrum**
+O projeto adotou uma abordagem híbrida, combinando a estruturação do **PMBOK** com a flexibilidade do **Scrum**:
+
+- **Fases de Iniciação e Planejamento**: Baseadas no PMBOK
+- **Execução e Controle**: Utilizando framework Scrum adaptado
+- **Monitoramento**: Integrando cerimônias ágeis com métricas tradicionais de projetos
+
+### 3.2 **Triângulo de Ferro do Projeto**
+
+| **Dimensão** | **Planejado** | **Realizado** | **Variação** |
+|--------------|---------------|---------------|--------------|
+| **Escopo** | 100% (MVP completo) | ~85% (em ajustes) | -15% |
+| **Prazo** | 12 semanas | 14 semanas (projetado) | +16.7% |
+| **Custo** | R$ 0 (recursos acadêmicos) | R$ 0 | 0% |
+
+## 4. **Análise de Stakeholders**
+
+### 4.1 **Matriz de Stakeholders**
+
+| **Stakeholder** | **Interesse** | **Influência** | **Estratégia de Engajamento** |
+|-----------------|---------------|----------------|------------------------------|
+| **Professores Orientadores** | Alta | Alta | Reuniões semanais, revisões formais |
+| **Equipe de Desenvolvimento** | Alta | Alta | Daily meetings, feedback contínuo |
+| **Usuários Finais (Alunos)** | Média | Baixa | Protótipos, testes de usabilidade |
+| **Coordenação do Curso** | Média | Média | Apresentações mensais, relatórios |
+| **Comunidade Acadêmica** | Baixa | Baixa | Documentação pública, artigos |
+
+### 4.2 **Plano de Engajamento**
+- **Comunicação semanal** com orientadores
+- **Feedback quinzenal** com usuários piloto
+- **Relatórios mensais** para coordenação
+- **Repositório público** para comunidade acadêmica
+
+## 5. **Planejamento Detalhado do Projeto**
+
+1.0 Mind&Learn  
+├── 1.1 Gestão do Projeto    
+│ ├── 1.1.1 Planejamento    
+│ ├── 1.1.2 Monitoramento    
+│ └── 1.1.3 Controle    
+├── 1.2 Desenvolvimento Frontend    
+│ ├── 1.2.1 Interface do Usuário    
+│ ├── 1.2.2 Experiência do Usuário    
+│ └── 1.2.3 Responsividade    
+├── 1.3 Desenvolvimento Backend    
+│ ├── 1.3.1 API REST    
+│ ├── 1.3.2 Banco de Dados    
+│ └── 1.3.3 Autenticação    
+├── 1.4 Infraestrutura e Deploy    
+│ ├── 1.4.1 Containerização    
+│ ├── 1.4.2 Configuração de Rede    
+│ └── 1.4.3 Monitoramento    
+├── 1.5 Qualidade e Testes    
+│ ├── 1.5.1 Testes Unitários    
+│ ├── 1.5.2 Testes de Integração    
+│ └── 1.5.3 Testes de Usabilidade    
+└── 1.6 Documentação    
+├── 1.6.1 Documentação Técnica    
+├── 1.6.2 Manual do Usuário    
+└── 1.6.3 Relatórios Acadêmicos    
+
+### 5.1 **Estrutura Analítica do Projeto (EAP)**
 
 ### 5.2 **Cronograma Base vs Real**
 
