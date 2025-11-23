@@ -1,5 +1,14 @@
 # **Projeto Mind&Learn** - **Relatório de Engenharia de Software**
 
+## Integrantes
+Guilherme Rodrigues dos Santos, RA: 081220010
+
+Kauê de Souza Silva, RA: 081220003
+
+Marcos Felipe Correa Soares, RA: 081220020
+
+Roger Freitas Pereira RA: 081220023
+
 ## 1. **Introdução e Contexto**
 
 O projeto **Mind&Learn** é uma aplicação educacional voltada ao **combate ao analfabetismo funcional no Brasil**, propondo um **ambiente digital gamificado** de aprendizado por meio de **quizzes e exercícios interativos**. Este relatório aborda especificamente os aspectos de **Engenharia de Software** do projeto, evidenciando o uso de **metodologias ágeis**, **planejamento de sprints**, **requisitos**, **arquitetura técnica**, **testes** e **integração interdisciplinar**. O foco é demonstrar a **aplicação prática dos conceitos teóricos** da disciplina, bem como o domínio das **etapas essenciais** de um processo moderno de desenvolvimento de software.
@@ -283,3 +292,4 @@ A **integração com Redes de Computadores** foi particularmente valiosa, pois p
 - **Cisco Networking Academy**. CCNA Routing and Switching.
 - Schwaber, K.; Sutherland, J. **The Scrum Guide**. 2020.
 - Cohn, M. **User Stories Applied: For Agile Software Development**. Addison-Wesley.
+
