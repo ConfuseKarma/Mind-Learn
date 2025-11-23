@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8d4c111c-98a2-4adb-86d1-19ff9e5dde80",
+		"_postman_id": "d0a1d1fc-e92a-4099-8dd8-1491b7573539",
 		"name": "MindLearn API",
 		"description": "Coleção completa para testar MindLearn API (v1) com roles admin, teacher e student.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -1245,6 +1245,55 @@
 								"student",
 								"me",
 								"progress"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "My Activity",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/me/activity",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"me",
+								"activity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Attempt Resolution",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/me/activity/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"me",
+								"activity",
+								"1"
 							]
 						}
 					},
