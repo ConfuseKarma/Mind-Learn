@@ -37,8 +37,10 @@ O projeto foi dividido em **quatro sprints principais**, com duração média de
 | **Sprint 0** | Setembro (1ª-2ª semana) | **Levantamento de requisitos**, **reuniões com pedagogos**, **definição do MVP**, **wireframes e protótipos** | **Todos** | ✅ Concluído |
 | **Sprint 1** | Setembro (3ª-4ª semana) | **Estrutura do frontend React**, **setup do backend Node.js**, **configuração Docker**, **banco MariaDB** | **Marcos, Roger** | ✅ Concluído |
 | **Sprint 2** | Outubro (1ª-3ª semana) | **API de autenticação JWT**, **sistema de usuários**, **CRUD de quizzes**, **UI responsiva** | **Kauê, Guilherme** | ✅ Concluído |
-| **Sprint 3** | Outubro (4ª) - Novembro (1ª) | **Sistema de insígnias**, **roles (prof/aluno/admin)**, **testes unitários**, **persistência de progresso** | **Todos** | 🟡 Em Andamento |
-| **Sprint 4** | Novembro (2ª-4ª semana) | **Testes de integração**, **refinamentos de UX**, **deploy**, **documentação final**, **coleta de feedback** | **Todos** | ⏳ Planejado |
+| **Sprint 3** | Outubro (4ª) - Novembro (1ª) | **Sistema de insígnias**, **roles (prof/aluno/admin)**, **testes unitários**, **persistência de progresso** | **Todos** | ✅ Concluído |
+| **Sprint 4** | Novembro (2ª-4ª semana) | **Testes de integração**, **refinamentos de UX**, **deploy**, **documentação final**, **coleta de feedback** | **Todos** | ✅ Concluído |
+
+(Status possíveis: ⏳ Planejado, 🟡 Em Andamento, ✅ Concluído)
  
 ## 6. **Engenharia de Requisitos**
  
@@ -70,6 +72,9 @@ Vamos realizar o deploy de um projeto de rede no laboratório de redes da FESA u
  
 <img width="2181" height="1203" alt="17628680908475640479572181794773" src="https://github.com/user-attachments/assets/d9bc0ced-9cfd-4239-b579-02ec02c8bf24" />
 
+### 8.1.1 Arquitetura Adaptada (Após consenso com equipes)
+
+<img width="1403" height="1077" alt="image" src="https://github.com/user-attachments/assets/9e3e74d4-6f80-4c00-b6fd-f73fae0be11e" />
  
 A topologia de rede implementada segue uma **arquitetura distribuída** onde cada roteador representa um estado diferente, interconectados através de uma **WAN (Wide Area Network)**. Esta configuração permite simular um ambiente real de implantação do Mind&Learn em múltiplas localizações geográficas.
  
@@ -140,6 +145,8 @@ A **integração com Redes de Computadores** foi particularmente valiosa, pois p
 - **IEEE 830-1998** — Software Requirements Specification (SRS) Standard.
 - Tanenbaum, A. S. **Redes de Computadores**. Elsevier, 5ª ed.
 - **Cisco Networking Academy**. CCNA Routing and Switching.
+
+
 
 
 
