@@ -24,20 +24,32 @@ async function seed() {
 
   const SEED_DEMO = process.env.SEED_DEMO === "true";
 
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@example.com";
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+
+  let admin = await User.findOne({ where: { email: ADMIN_EMAIL } });
+
+  if (!admin) {
+    admin = await User.create({
+      name: "Administrador",
+      email: ADMIN_EMAIL,
+      passwordHash: bcrypt.hashSync(ADMIN_PASSWORD, 10),
+      role: "admin",
+    });
+  }
+
   if (!SEED_DEMO) {
-    console.log("Seed básico concluído (schema + badges).");
+    console.log("Seed básico concluído (schema + badges + admin).");
+    console.log("Um usuário administrador foi criado (ou reaproveitado):");
+    console.log(`  Admin e-mail: ${ADMIN_EMAIL}`);
+    console.log(
+      `  Admin senha: ${ADMIN_PASSWORD}  (altere em produção ou use variáveis ADMIN_EMAIL/ADMIN_PASSWORD)`,
+    );
     console.log(
       "Defina SEED_DEMO=true para popular usuários, temas, lições, provas e questões de demonstração.",
     );
     process.exit(0);
   }
-
-  const admin = await User.create({
-    name: "Administrador",
-    email: "admin@example.com",
-    passwordHash: bcrypt.hashSync("admin123", 10),
-    role: "admin",
-  });
 
   const teacher = await User.create({
     name: "Professor Demo",
@@ -127,9 +139,10 @@ async function seed() {
   }
 
   console.log("Seed completo com banco de questões, temas, lições e provas em português.");
-  console.log("Admin:    admin@example.com / admin123");
-  console.log("Professor: teacher@example.com / teacher123");
-  console.log("Aluno:    demo@example.com / secret");
+  console.log("Usuários de demonstração:");
+  console.log(`  Admin:    ${ADMIN_EMAIL} / ${ADMIN_PASSWORD}`);
+  console.log("  Professor: teacher@example.com / teacher123");
+  console.log("  Aluno:    demo@example.com / secret");
   process.exit(0);
 }
 

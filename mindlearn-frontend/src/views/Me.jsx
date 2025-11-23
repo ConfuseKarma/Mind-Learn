@@ -7,7 +7,7 @@ export default function Me() {
   const { user, role, setUser, token } = useAuth()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [setDevClicks] = useState(0)
+  const [devClicks, setDevClicks] = useState(0)
   const [showSession, setShowSession] = useState(false)
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export default function Me() {
         setUser({
           name: me.name,
           email: me.email,
-          role: me.role
+          role: me.role,
         })
       } catch (e) {
         setError(e.message)
@@ -62,9 +62,15 @@ export default function Me() {
         <div className="card shadow">
           <div className="sub muted">Informações básicas</div>
           <div className="space"></div>
-          <div>Nome: <b>{user?.name}</b></div>
-          <div>E-mail: <b>{user?.email}</b></div>
-          <div>Papel: <b>{papel}</b></div>
+          <div>
+            Nome: <b>{user?.name}</b>
+          </div>
+          <div>
+            E-mail: <b>{user?.email}</b>
+          </div>
+          <div>
+            Papel: <b>{papel}</b>
+          </div>
         </div>
 
         <div className="card shadow">
@@ -89,10 +95,10 @@ export default function Me() {
                 {
                   token,
                   role,
-                  user
+                  user,
                 },
                 null,
-                2
+                2,
               )}
             </pre>
           )}

@@ -9,8 +9,8 @@ export default function Login() {
   const nav = useNavigate()
   const { setToken, setUser, setRole } = useAuth()
   const { showToast } = useToast()
-  const [email, setEmail] = useState('demo@example.com')
-  const [password, setPassword] = useState('secret')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
